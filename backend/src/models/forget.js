@@ -1,0 +1,33 @@
+import mongoose from 'mongoose';
+import crypto from 'crypto';
+
+// Password Reset Token Schema
+const passwordResetTokenSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
+    },
+    token: {
+        type: String,
+        required: true,
+    },
+    expiresAt: {
+        type: Date,
+        required: true,
+    },
+});
+
+// Method to generate a secure token
+passwordResetTokenSchema.statics.generateToken = function (userId) {
+    const token = crypto.randomBytes(32).toString('hex');
+    const hash = crypto.createHash('sha256').update(token).digest('hex');
+    const expiresAt = Date.now() + 15 * 60 * 1000; // Token valid for 15 minutes
+    return { token, hash, expiresAt };
+};
+
+// PasswordResetToken Model
+const PasswordResetToken = mongoose.model('PasswordResetToken', passwordResetTokenSchema);
+
+// Export the PasswordResetToken model
+export default PasswordResetToken;
