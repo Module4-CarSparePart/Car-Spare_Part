@@ -10,6 +10,8 @@ import Product from "./pages/Product";
 import ProductDetails from "./pages/ProductsDetails";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ProfilePage from "./pages/ProfilePage";
+import AddProductPage from "./pages/AddProduct";
 
 export const App = () => {
   return (
@@ -26,6 +28,8 @@ export const App = () => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/home" element={<Home />} /> {/* Home route */}
           <Route path="/products" element={<Product />} />
+          <Route path="/profilepage" element={<ProfilePage />} />
+          <Route path="/add-product" element={<AddProductPage />} />
           <Route path="/product/:partNumber" element={<ProductDetails />} />
         </Routes>
       </div>
