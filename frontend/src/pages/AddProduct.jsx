@@ -1,15 +1,19 @@
 import React, { useState } from "react";
+import { createProduct } from "../apiCalls"; // Import the API function
 
 const AddProductPage = () => {
-  // State to handle the product form
   const [productData, setProductData] = useState({
     name: "",
-    description: "",
+    brand: "",
     price: "",
-    imageUrl: "",
+    category: "",
+    stock: "",
+    description: "",
+    image: "",
   });
 
-  // Handle input changes for the product form
+  const [loading, setLoading] = useState(false); // For handling loading state
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProductData((prevData) => ({
@@ -18,10 +22,32 @@ const AddProductPage = () => {
     }));
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(productData);
+    setLoading(true);
+
+    try {
+      // Call the API function to create the product
+      const response = await createProduct(productData);
+
+      if (response) {
+        alert("Product added successfully!");
+        setProductData({
+          name: "",
+          brand: "",
+          price: "",
+          category: "",
+          stock: "",
+          description: "",
+          image: "",
+        });
+      }
+    } catch (error) {
+      console.error("Error adding product:", error.message);
+      alert("Failed to add product. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,84 +60,60 @@ const AddProductPage = () => {
         backgroundPosition: "center",
       }}
     >
-      {/* Background Image with Blur Effect */}
-      <div className="absolute inset-0 bg-black opacity-50"></div> {/* Dark overlay for better contrast */}
-      
+      <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="flex justify-center items-center min-h-screen">
         <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg max-w-lg w-full z-10">
           <h3 className="text-2xl font-semibold text-center text-gray-700 mb-4">
             Add Product
           </h3>
           <form onSubmit={handleSubmit}>
-            {/* Product Name */}
-            <div className="mb-4">
-              <label htmlFor="name" className="block text-gray-600">
-                Product Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={productData.name}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
+            {[
+              { label: "Product Name", name: "name", type: "text" },
+              { label: "Brand", name: "brand", type: "text" },
+              { label: "Price", name: "price", type: "number" },
+              { label: "Category", name: "category", type: "text" },
+              { label: "Stock", name: "stock", type: "number" },
+              { label: "Description", name: "description", type: "textarea" },
+              { label: "Image URL", name: "image", type: "text" },
+            ].map((field) => (
+              <div key={field.name} className="mb-4">
+                <label htmlFor={field.name} className="block text-gray-600">
+                  {field.label}
+                </label>
+                {field.type === "textarea" ? (
+                  <textarea
+                    id={field.name}
+                    name={field.name}
+                    value={productData[field.name]}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                ) : (
+                  <input
+                    type={field.type}
+                    id={field.name}
+                    name={field.name}
+                    value={productData[field.name]}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required={field.name !== "image"}
+                  />
+                )}
+              </div>
+            ))}
 
-            {/* Product Description */}
-            <div className="mb-4">
-              <label htmlFor="description" className="block text-gray-600">
-                Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                value={productData.description}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            {/* Product Price */}
-            <div className="mb-4">
-              <label htmlFor="price" className="block text-gray-600">
-                Price
-              </label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                value={productData.price}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            {/* Product Image URL */}
-            <div className="mb-4">
-              <label htmlFor="imageUrl" className="block text-gray-600">
-                Product Image URL
-              </label>
-              <input
-                type="text"
-                id="imageUrl"
-                name="imageUrl"
-                value={productData.imageUrl}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            {/* Submit Button */}
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
+                className={`px-6 py-2 rounded-lg text-white ${
+                  loading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-blue-500 hover:bg-blue-600"
+                }`}
+                disabled={loading}
               >
-                Add Product
+                {loading ? "Adding..." : "Add Product"}
               </button>
             </div>
           </form>

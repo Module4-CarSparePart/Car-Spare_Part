@@ -1,61 +1,134 @@
-import axios from 'axios';
-import { REGISTER_URL, LOGIN_URL, RESET_PASSWORD_URL, FORGOT_PASSWORD_URL } from './endPoint'; // Import the RESET_PASSWORD_URL
+import axios from "axios";
+import {
+  REGISTER_URL,
+  LOGIN_URL,
+  RESET_PASSWORD_URL,
+  FORGOT_PASSWORD_URL,
+  PRODUCT_BASE_URL, // Add base URL for Product APIs
+} from "./endPoint"; // Import API endpoints
 
-// User registration API call
+// User Authentication API Calls
+
+// User Registration
 export const registerUser = async (userData) => {
   try {
     const response = await axios.post(REGISTER_URL, userData);
     return response.data;
   } catch (error) {
-    console.error("Error during registration:", error);
+    console.error("Registration Error:", error.response?.data || error.message);
     throw error;
   }
 };
 
-// User login API call
+// User Login
 export const loginUser = async (userData) => {
   try {
     const response = await axios.post(LOGIN_URL, userData);
     return response.data;
   } catch (error) {
-    console.error("Login error: ", error);
-    throw new Error(error.response?.data?.message || 'An error occurred during login');
+    console.error("Login Error:", error.response?.data || error.message);
+    throw new Error(
+      error.response?.data?.message || "An error occurred during login"
+    );
   }
 };
 
-
+// Forgot Password
 export const forgotPassword = async (data) => {
   try {
     const response = await axios.post(FORGOT_PASSWORD_URL, data);
     return response.data;
   } catch (error) {
-    console.error("Forgot Password Error: ", error);
+    console.error(
+      "Forgot Password Error:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
 
+// Reset Password
 export const resetPassword = async (data) => {
   try {
     const { token, newPassword } = data;
-
-    // Log details for debugging
-    console.log("Reset Password Token:", token);
-    console.log("Reset Password URL:", `${RESET_PASSWORD_URL}/${token}`);
-    console.log("newPassword:", newPassword);
-
-    // Send a POST request with token in the URL and new password in the body
-    const response = await axios.post(`${RESET_PASSWORD_URL}/${token}`, { newPassword });
-
-    // Return the response data
+    const response = await axios.post(`${RESET_PASSWORD_URL}/${token}`, {
+      newPassword,
+    });
     return response.data;
   } catch (error) {
-    // Handle errors and log detailed information
-    console.error("Reset Password Error:", error.response?.data || error.message);
+    console.error(
+      "Reset Password Error:",
+      error.response?.data || error.message
+    );
     throw error;
   }
+};
 
+// Product API Calls
 
+// Get all products
+export const getAllProducts = async () => {
+  try {
+    const response = await axios.get(`${PRODUCT_BASE_URL}/allpro`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products:", error.response?.data || error.message);
+    throw error;
+  }
+};
 
+// Get product by ID
+export const getProductById = async (productId) => {
+  try {
+    const response = await axios.get(`${PRODUCT_BASE_URL}/getprobyid/${productId}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      `Error fetching product with ID ${productId}:`,
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
 
+// Create a new product
+export const createProduct = async (productData) => {
+  try {
+    const response = await axios.post(`${PRODUCT_BASE_URL}/createpro`, productData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating product:", error.response?.data || error.message);
+    throw error;
+  }
+};
 
+// Update a product
+export const updateProduct = async (productId, updatedData) => {
+  try {
+    const response = await axios.put(
+      `${PRODUCT_BASE_URL}/update/${productId}`,
+      updatedData
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      `Error updating product with ID ${productId}:`,
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+// Delete a product
+export const deleteProduct = async (productId) => {
+  try {
+    const response = await axios.delete(`${PRODUCT_BASE_URL}/delete/${productId}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      `Error deleting product with ID ${productId}:`,
+      error.response?.data || error.message
+    );
+    throw error;
+  }
 };
