@@ -25,7 +25,7 @@ const Product = () => {
           <ProductCard
             key={product._id}
             productName={product.name}
-            productImage={product.imageUrl}
+            productImage={product.image}
             productPrice={product.price}
           />
         ))}
