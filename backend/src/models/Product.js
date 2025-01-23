@@ -1,18 +1,38 @@
-const mongoose = require('mongoose');
+import React, { useEffect, useState } from "react";
+import { getAllProducts } from "../apiCalls";
+import ProductCard from "../components/ProductCard";
 
-const productSchema = new mongoose.Schema({
-  name: { type: String },
-  
-  brand: { type: String  },
-  price: { type: Number  },
-  category: { type: String },
-  stock: { type: Number},
-  description: { type: String },
-  image: {type: String},
-  createdAt: { type: Date, default: Date.now },
+const Product = () => {
+  const [products, setProducts] = useState([]);
 
-});
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getAllProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error.message);
+      }
+    };
+    fetchProducts();
+  }, []);
 
-const Product = mongoose.model('Product', productSchema);
+  return (
+    <div className="container mx-auto mt-10">
+      <h1 className="text-xl font-bold mb-4">Products</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4">
+        {products.map((product) => (
+          <ProductCard
+            key={product._id}  // Use _id here instead of id
+            productId={product._id}  // Use _id here instead of id
+            productName={product.name}
+            productImage={product.image}
+            productPrice={product.price}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
-module.exports = Product;
+export default Product;

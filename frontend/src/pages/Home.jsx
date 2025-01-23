@@ -1,21 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import ProductCard from "../components/ProductCard";
+import { Link } from "react-router-dom";
 
 const Home = () => {
-  const parts = [
-    { id: 1, name: "Brake Pads", image: "https://via.placeholder.com/150", price: 4999 },
-    { id: 2, name: "Engine Oil", image: "https://via.placeholder.com/150", price: 2999 },
-    { id: 3, name: "Air Filter", image: "https://via.placeholder.com/150", price: 1999 },
-    { id: 4, name: "Battery", image: "https://via.placeholder.com/150", price: 8999 },
-    { id: 5, name: "Spark Plugs", image: "https://via.placeholder.com/150", price: 1499 },
-    { id: 6, name: "Headlights", image: "https://via.placeholder.com/150", price: 5999 },
+  const categories = [
+    {
+      id: 1,
+      name: "Engine Parts",
+      image: "https://media.istockphoto.com/id/1212230930/photo/car-engine-parts.jpg?s=612x612&w=0&k=20&c=YCG4lzjxDYTFQQ-gOniW-r-Xl-th73hBOrcnvdiU274=",
+    },
+    {
+      id: 2,
+      name: "Braking System",
+      image: "https://media.istockphoto.com/id/1193247877/photo/handsome-mechanic-in-uniform.jpg?s=612x612&w=0&k=20&c=ZDIuniZcHY0McW4Zc654glUrtTGa8A7U2X2enGM7_60=",
+    },
+    {
+      id: 3,
+      name: "Suspension & Steering",
+      image: "https://media.istockphoto.com/id/1270395078/photo/car-front-axle-sports-car-front-suspension-automotive-industry-components.jpg?s=612x612&w=0&k=20&c=oZf__kDr3qIwfkK1WFgWwEOaVx7ULP4fcLWtAFY160g=",
+    },
+    {
+      id: 4,
+      name: "Electrical Parts",
+      image: "https://thumbs.dreamstime.com/b/electrical-equipment-car-set-auto-parts-isolated-white-background-electrical-equipment-car-set-120666543.jpg",
+    },
+    {
+      id: 5,
+      name: "Body & Accessories",
+      image: "https://c8.alamy.com/comp/T2BN4F/red-car-body-disassembled-and-many-vehicles-parts-3d-illustration-T2BN4F.jpg",
+    },
+    {
+      id: 6,
+      name: "Cooling System",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUwApiBGjXHVHh-_WI1fL5yLnZsevRDDYPng&s",
+    },
   ];
 
   return (
     <div>
-      
-
+      {/* Header Section */}
       <header
         className="relative text-center py-20 bg-cover bg-center overflow-hidden"
         style={{
@@ -43,46 +66,43 @@ const Home = () => {
         >
           Your one-stop solution for all car spare parts.
         </motion.p>
-        <motion.a
-          href="#products"
-          className="relative bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
-          whileHover={{ scale: 1.1 }}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1 }}
         >
-          Shop Now
-        </motion.a>
+          <Link
+            to="/products"
+            className="relative bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+            whileHover={{ scale: 1.1 }}
+          >
+            Shop Now
+          </Link>
+        </motion.div>
       </header>
 
-      
-
-      <section id="parts" className="py-10">
+      {/* Categories Section */}
+      <section className="py-10">
         <div className="container mx-auto text-center">
-          <motion.h2
-            className="text-3xl font-bold mb-6"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            Our Parts
-          </motion.h2>
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            {parts.map((part) => (
-              <ProductCard
-                key={part.id}
-                productName={part.name}
-                productImage={part.image}
-                productPrice={part.price}
-              />
+          <h2 className="text-3xl font-bold mb-6">Car Spare Part Categories</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {categories.map((category) => (
+              <motion.div
+                key={category.id}
+                className="p-4 border rounded hover:shadow-lg transition-shadow duration-300"
+                whileHover={{ scale: 1.05 }}
+              >
+                <img
+                  src={category.image}
+                  alt={category.name}
+                  className="w-full h-48 object-cover rounded mb-4"
+                />
+                <h3 className="text-lg font-semibold">{category.name}</h3>
+              </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
-
-     
     </div>
   );
 };

@@ -65,3 +65,6 @@ const getAllProducts = async (req, res) => {
 
   export { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct };
 
+
+
+  
