@@ -6,6 +6,7 @@ import userRouter from './routes/userRoute.js';  // Use ES Module import for the
 import productrouter from './routes/productRoute.js';
 import cartrouter from './routes/cartRouter.js';
 import uploadrouter from './routes/uploadRoutes.js';
+import paymentRouter from './routes/paymentRoutes.js';
 
 dotenv.config();  // Load environment variables
 
@@ -32,6 +33,8 @@ app.use("/api/product", productrouter);
 app.use("/api/cart", cartrouter);
 
 app.use('/api/img', uploadrouter);
+
+app.use('/api/payments', paymentRouter);
 
 
 // Basic route for testing
