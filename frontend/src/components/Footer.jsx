@@ -2,17 +2,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white py-8">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* About Section */}
-        <div>
-          <h3 className="text-lg font-bold mb-4">About Us</h3>
-          <p className="text-gray-400">
-            CarSpareShop is your trusted platform for high-quality car spare
-            parts. We ensure the best prices and services for all car enthusiasts and professionals.
-          </p>
-        </div>
-
+    <footer className="bg-gray-900 text-white py-10">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Quick Links */}
         <div>
           <h3 className="text-lg font-bold mb-4">Quick Links</h3>
@@ -43,6 +34,27 @@ const Footer = () => {
               </a>
             </li>
           </ul>
+        </div>
+
+        {/* Newsletter Subscription */}
+        <div>
+          <h3 className="text-lg font-bold mb-4">Subscribe to Our Newsletter</h3>
+          <p className="text-gray-400 mb-4">
+            Stay updated with the latest deals and offers. Enter your email below.
+          </p>
+          <form className="flex">
+            <input
+              type="email"
+              placeholder="Your email address"
+              className="flex-1 px-4 py-2 rounded-l-lg text-gray-700 focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 px-4 py-2 rounded-r-lg text-white font-bold hover:bg-blue-600 transition"
+            >
+              Subscribe
+            </button>
+          </form>
         </div>
 
         {/* Contact Section */}
@@ -87,7 +99,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-700 mt-6 pt-4">
+      <div className="border-t border-gray-700 mt-10 pt-4">
         <p className="text-center text-gray-500 text-sm">
           &copy; 2025 CarSpareShop. All rights reserved. | Designed by CarSpareTeam.
         </p>

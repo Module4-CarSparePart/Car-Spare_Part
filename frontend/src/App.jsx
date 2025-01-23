@@ -35,7 +35,7 @@ export const App = () => {
 
           {/* Product Management Routes */}
           <Route path="/products" element={<Product />} /> {/* View All Products */}
-          <Route path="/product/:id" element={<ProductDetails />} /> {/* View Product Details */}
+          <Route path="/product/:id" element={<ProductDetails />} />{/* View Product Details */}
           <Route path="/add-product" element={<AddProductPage />} /> {/* Add a New Product */}
 
           {/* User Profile Route */}
