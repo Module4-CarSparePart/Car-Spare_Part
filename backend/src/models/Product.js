@@ -1,38 +1,43 @@
-import React, { useEffect, useState } from "react";
-import { getAllProducts } from "../apiCalls";
-import ProductCard from "../components/ProductCard";
+import mongoose from 'mongoose';
 
-const Product = () => {
-  const [products, setProducts] = useState([]);
+// Define the product schema
+const productSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true, // Removes leading and trailing whitespaces
+  },
+  price: {
+    type: Number,
+    required: true,
+    min: 0, // Ensure the price is non-negative
+  },
+  description: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  category: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  stock: {
+    type: Number,
+    required: true,
+    min: 0, // Ensure stock is non-negative
+    default: 0,
+  },
+  image: {
+    type: String, // URL of the product image
+    required: false,
+    trim: true,
+  },
+}, {
+  timestamps: true, // Adds createdAt and updatedAt timestamps automatically
+});
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getAllProducts();
-        setProducts(data);
-      } catch (error) {
-        console.error("Error fetching products:", error.message);
-      }
-    };
-    fetchProducts();
-  }, []);
-
-  return (
-    <div className="container mx-auto mt-10">
-      <h1 className="text-xl font-bold mb-4">Products</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4">
-        {products.map((product) => (
-          <ProductCard
-            key={product._id}  // Use _id here instead of id
-            productId={product._id}  // Use _id here instead of id
-            productName={product.name}
-            productImage={product.image}
-            productPrice={product.price}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
+// Create the product model
+const Product = mongoose.model('Product', productSchema);
 
 export default Product;

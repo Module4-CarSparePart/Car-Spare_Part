@@ -1,17 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { GiCarWheel } from "react-icons/gi";
-import { FaHome, FaTools, FaConciergeBell, FaInfoCircle, FaSignInAlt, FaShoppingCart, FaUserCircle } from "react-icons/fa"; // Import the required icons
+import { FaHome, FaTools, FaConciergeBell, FaInfoCircle, FaSignInAlt, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
   return (
     <nav className="bg-gray-900 text-white">
       <div className="container mx-auto">
-        {/* Top Section: Logo, Search Bar, and My Account */}
+        {/* Top Section: Logo, Search Bar, and My Account with Cart */}
         <div className="flex items-center justify-between py-4">
           {/* Logo Section */}
           <div className="text-4xl font-extrabold flex items-center space-x-3">
-            <GiCarWheel className="text-yellow-500 text-5xl" /> {/* Wheel icon */}
+            <GiCarWheel className="text-yellow-500 text-5xl" />
             <span className="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-yellow-500 to-blue-500">
               SpeedySpare
             </span>
@@ -29,18 +29,22 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* My Account Section */}
-          <div className="flex items-center space-x-3">
+          {/* My Account and Cart Section */}
+          <div className="flex items-center space-x-6">
             <Link to="/profilepage" className="flex items-center space-x-2 hover:text-gray-300">
               <FaUserCircle />
               <span>My Account</span>
+            </Link>
+            <Link to="/cart" className="flex items-center space-x-2 hover:text-gray-300">
+              <FaShoppingCart />
+              <span>Cart</span>
             </Link>
           </div>
         </div>
 
         {/* Bottom Section: Navigation Links */}
         <div className="py-4">
-          <ul className="flex space-x-6 justify-start">
+          <ul className="flex space-x-6 justify-center">
             <li>
               <Link to="/home" className="flex items-center space-x-2 hover:text-gray-300">
                 <FaHome />
@@ -69,12 +73,6 @@ const Navbar = () => {
               <Link to="/login" className="flex items-center space-x-2 hover:text-gray-300">
                 <FaSignInAlt />
                 <span>Sign In</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/cart" className="flex items-center space-x-2 hover:text-gray-300">
-                <FaShoppingCart />
-                <span>Cart</span>
               </Link>
             </li>
           </ul>

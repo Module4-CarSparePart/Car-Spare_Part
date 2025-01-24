@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -47,7 +47,7 @@ const Home = () => {
         }}
       >
         <div
-          className="absolute inset-0 bg-black opacity-50"
+          className="absolute inset-0 bg-black opacity-60"
           style={{ filter: "blur(8px)" }}
         ></div>
         <motion.h1
@@ -73,7 +73,7 @@ const Home = () => {
         >
           <Link
             to="/products"
-            className="relative bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+            className="relative bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
             whileHover={{ scale: 1.1 }}
           >
             Shop Now
@@ -82,14 +82,14 @@ const Home = () => {
       </header>
 
       {/* Categories Section */}
-      <section className="py-10">
+      <section className="py-10 bg-gray-50">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Car Spare Part Categories</h2>
+          <h2 className="text-3xl font-bold mb-6 text-gray-800">Car Spare Part Categories</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {categories.map((category) => (
               <motion.div
                 key={category.id}
-                className="p-4 border rounded hover:shadow-lg transition-shadow duration-300"
+                className="p-4 border rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white"
                 whileHover={{ scale: 1.05 }}
               >
                 <img
@@ -97,7 +97,7 @@ const Home = () => {
                   alt={category.name}
                   className="w-full h-48 object-cover rounded mb-4"
                 />
-                <h3 className="text-lg font-semibold">{category.name}</h3>
+                <h3 className="text-lg font-semibold text-gray-700">{category.name}</h3>
               </motion.div>
             ))}
           </div>

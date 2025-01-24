@@ -12,6 +12,11 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProfilePage from "./pages/ProfilePage";
 import AddProductPage from "./pages/AddProduct";
+import AboutUs from "./pages/AboutUs";
+import Services from "./pages/Services";
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+
 
 export const App = () => {
   return (
@@ -32,6 +37,8 @@ export const App = () => {
           {/* Main Application Routes */}
           <Route path="/home" element={<Home />} /> {/* Home route */}
           <Route path="/cart" element={<Cart />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/services" element={<Services />} />
 
           {/* Product Management Routes */}
           <Route path="/products" element={<Product />} /> {/* View All Products */}
@@ -44,6 +51,7 @@ export const App = () => {
       </div>
       {/* Footer remains constant across pages */}
       <Footer />
+      <ToastContainer />
     </Router>
   );
 };

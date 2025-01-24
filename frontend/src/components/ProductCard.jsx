@@ -5,49 +5,71 @@ import { useNavigate } from "react-router-dom";
 
 /**
  * ProductCard Component
- * Renders an individual product card with animations.
+ * Renders an individual product card with a professional hover animation.
  */
-const ProductCard = ({ productId, productName, productImage, productPrice }) => {
+const ProductCard = ({
+  productId,
+  productName,
+  productImage,
+  productPrice,
+}) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
     navigate(`/product/${productId}`);
   };
+  
 
   return (
-    
     <motion.div
-      className="p-3 border rounded hover:shadow-md transition-shadow duration-300 w-64"
-      whileHover={{ scale: 1.05 }}
+      className="p-4 border rounded-lg bg-white cursor-pointer"
+      whileHover={{ scale: 1.05 }} // Restored the scale animation on hover
+      transition={{ duration: 0.3 }} // Smooth scaling
+      style={{
+        borderColor: "darkblue", // Matches theme
+      }}
     >
-      {/* Product Image */}
-      <div className="w-full h-40 bg-gray-100 flex items-center justify-center overflow-hidden rounded mb-3">
-        <img
-          src={productImage}
-          alt={productName}
-          className="h-full object-contain"
-          onError={(e) => (e.target.src = "/placeholder-image.png")} // Fallback image
-        />
-      </div>
-
-      {/* Product Name */}
-      <h3 className="text-base font-semibold mb-1">{productName}</h3>
-
-      {/* Product Price */}
+      <img
+        src={productImage}
+        alt={productName}
+        className="w-full h-48 object-cover rounded mb-4"
+        onError={(e) => (e.target.src = productImage)}
+      />
+      <h3 className="text-lg font-semibold mb-2 text-gray-800">{productName}</h3>
       {productPrice !== null && (
-        <p className="text-sm text-gray-600 mb-2">
+        <p className="text-gray-600 text-sm mb-3">
           ₹{productPrice.toLocaleString("en-IN")}
         </p>
       )}
-
-      {/* Buttons */}
-      <div className="flex justify-between items-center">
-        <button className="bg-blue-500 text-white px-4 py-1 text-sm rounded hover:bg-blue-600">
+      <div className="flex justify-between space-x-2">
+        <button
+          className="text-sm px-4 py-2 rounded transition-all duration-300"
+          style={{
+            backgroundColor: "orange", // Accent color
+            color: "white", // Button text color
+          }}
+          onMouseOver={(e) =>
+            (e.target.style.backgroundColor = "darkorange") // Darker orange on hover
+          }
+          onMouseOut={(e) =>
+            (e.target.style.backgroundColor = "orange") // Original color
+          }
+        >
           Add to Cart
         </button>
         <button
           onClick={handleViewDetails}
-          className="bg-blue-400 text-white px-4 py-1 text-sm rounded hover:bg-blue-500"
+          className="text-sm px-4 py-2 rounded transition-all duration-300"
+          style={{
+            backgroundColor: "navy", // Primary theme color
+            color: "white", // Button text color
+          }}
+          onMouseOver={(e) =>
+            (e.target.style.backgroundColor = "midnightblue") // Darker blue on hover
+          }
+          onMouseOut={(e) =>
+            (e.target.style.backgroundColor = "navy") // Original color
+          }
         >
           View Details
         </button>
@@ -61,8 +83,10 @@ ProductCard.propTypes = {
   productId: PropTypes.string.isRequired,
   productName: PropTypes.string.isRequired,
   productImage: PropTypes.string.isRequired,
-  productPrice: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf([null])])
-    .isRequired,
+  productPrice: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.oneOf([null]),
+  ]).isRequired,
 };
 
 // Default props for fallback values

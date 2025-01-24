@@ -10,15 +10,19 @@ const getAllProducts = async (req, res) => {
   };
   
   // Get a single product by ID
-  const getProductById = async (req, res) => {
+  export const getProductById = async (req, res) => {
     try {
-      const product = await Product.findById(req.params.id);
+      const { id } = req.params;
+      const product = await Product.findById(id);
+  
       if (!product) {
-        return res.status(404).json({ message: 'Product not found' });
+        return res.status(404).json({ message: "Product not found" });
       }
-      res.status(200).json(product);
+  
+      res.json(product); // Sends all product details as JSON
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      console.error(error);
+      res.status(500).json({ message: "Error fetching product details" });
     }
   };
   
@@ -62,8 +66,32 @@ const getAllProducts = async (req, res) => {
     }
   };
 
+  const Product = require('../models/Product');
 
-  export { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct };
+// Controller function to get product details by product ID
+const getProductDetails = async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    // Find product by ID
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(200).json(product); // Send the product details
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
+
+
+  export { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct,getProductDetails };
 
 
 

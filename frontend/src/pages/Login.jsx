@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../apiCalls';
+import { toast } from 'react-toastify'; // Import toast
+import 'react-toastify/dist/ReactToastify.css'; // Import default styles for toast
 
 const Login = () => {
   // State hooks for form data
@@ -14,18 +16,29 @@ const Login = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const userData = { email, password };
-
+    
     try {
       setLoading(true);
       setError('');
-
+      
       const response = await loginUser(userData); // API call to login
-
+      
       if (response.success) {
-        alert('Login successful!');
-        navigate('/home'); // Redirect to dashboard or another page
+        // Show success toast message first
+        toast.success('Login successful!', {
+          position: "top-center",
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        
+        // Then navigate to the home page
+        navigate('/home');
       } else {
         setError('Invalid email or password.');
       }
@@ -35,7 +48,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-
   return (
     <div className="h-screen flex">
       {/* Left Side: Login Form */}
