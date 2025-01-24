@@ -7,6 +7,8 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  console.log(id);
+  
 
   useEffect(() => {
     // Fetch product details from the backend
@@ -21,6 +23,8 @@ const ProductDetails = () => {
         }
 
         const data = await response.json();
+        console.log(data);
+        
         setProduct(data); // Set product data
         setLoading(false); // Turn off the loading state
       } catch (error) {

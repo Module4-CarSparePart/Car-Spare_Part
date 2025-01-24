@@ -10,7 +10,7 @@ const getAllProducts = async (req, res) => {
   };
   
   // Get a single product by ID
-  export const getProductById = async (req, res) => {
+ const getProductById = async (req, res) => {
     try {
       const { id } = req.params;
       const product = await Product.findById(id);
@@ -66,7 +66,6 @@ const getAllProducts = async (req, res) => {
     }
   };
 
-  const Product = require('../models/Product');
 
 // Controller function to get product details by product ID
 const getProductDetails = async (req, res) => {

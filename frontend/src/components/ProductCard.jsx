@@ -14,10 +14,14 @@ const ProductCard = ({
   productPrice,
 }) => {
   const navigate = useNavigate();
-
+  console.log(productId);
+  console.log(productName);
+  
+  
   const handleViewDetails = () => {
     navigate(`/product/${productId}`);
   };
+
   
 
   return (
