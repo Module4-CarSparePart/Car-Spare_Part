@@ -6,6 +6,7 @@ import {
   ResetPasswordController,
   UpdateUserController,
   DeleteUserController,
+  GetUserByEmailController
 } from '../controllers/userController.js';
 
 const router = express.Router();
@@ -15,6 +16,8 @@ router.post('/register', RegisterController);
 router.post('/login', LoginController);
 router.put('/update/:id', UpdateUserController); // Update user details by ID
 router.delete('/delete/:id', DeleteUserController); // Delete a user by ID
+
+router.get("/get/:email", GetUserByEmailController);
 
 // Routes for Forgot and Reset Password
 router.post('/forgot-password', ForgotPasswordController); // Send reset token via email

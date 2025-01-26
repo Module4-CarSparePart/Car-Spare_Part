@@ -1,120 +1,165 @@
-import React, { useState } from "react";
-import { FaEdit } from "react-icons/fa"; // Pencil Icon for editing
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ProfilePage = () => {
-  const navigate = useNavigate(); // Hook to navigate programmatically
+  const [user, setUser] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
 
-  // State to handle profile picture, name, email, and additional profile info
-  const [profile, setProfile] = useState({
-    name: "wabale pooja", // This will be replaced with dynamic user data
-    email: "pooja@gmail.com", // This will be replaced with dynamic user data
-    phone: "+919307927009", // Example phone number
-    address: "Akshay shanskruti,baif road, B wing 206,Wagholi", // Example address
-    profilePic: null,
-  });
+  // Fetch user data from localStorage on component mount
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
 
-  // Handle profile picture upload
-  const handleProfilePicChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfile((prevState) => ({
-        ...prevState,
-        profilePic: URL.createObjectURL(file),
-      }));
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+      setFormData(parsedUser);
+    } else {
+      console.error("No user data found in localStorage.");
+      navigate("/login");
     }
+  }, [navigate]);
+
+  // Handle input change during editing
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  // Navigate to Add Product Page
-  const handleAddProductClick = () => {
-    navigate("/add-product"); // Redirect to the Add Product Page
+  // Update profile information
+  const handleSave = () => {
+    axios
+      .put("/api/user/profile", formData, { withCredentials: true })
+      .then((response) => {
+        setUser(response.data);
+        setFormData(response.data);
+        localStorage.setItem("user", JSON.stringify(response.data)); // Update localStorage
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        console.error("Error updating profile:", error);
+      });
+  };
+
+  // Logout function
+  const handleLogout = () => {
+    axios
+      .post("/api/user/logout", {}, { withCredentials: true })
+      .then(() => {
+        localStorage.removeItem("user"); // Remove user data from localStorage
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Logout failed:", error);
+      });
   };
 
   return (
-    <div
-      className="relative min-h-screen"
-      style={{
-        backgroundImage:
-          "url('https://media.istockphoto.com/id/478107962/photo/auto-parts.jpg?s=612x612&w=0&k=20&c=C31mE-cVYFlLqJp9smDKUczPoBEtoYl5gaGxdvH0lmM=')", // Replace with actual image URL
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed", // Keeps the background fixed while scrolling
-      }}
-    >
-      {/* Background Image with Dark Overlay */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>
+    <div className="min-h-screen bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 flex items-center justify-center p-6">
+      {/* Centered Profile Card */}
+      <div className="bg-white rounded-lg shadow-xl p-10 space-y-8 max-w-3xl w-full">
+        {/* Profile Header */}
+        <div className="relative flex flex-col md:flex-row items-center">
+          {/* Background Animation */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full blur-lg opacity-50 h-48 w-48 transform translate-x-4 translate-y-4"></div>
+          <img
+            src={user.profilePicture || "https://via.placeholder.com/150"}
+            alt="Profile"
+            className="relative z-10 w-40 h-40 rounded-full border-4 border-blue-500 shadow-lg animate-bounce"
+          />
+          <div className="ml-0 md:ml-8 text-center md:text-left mt-4 md:mt-0">
+            <h1 className="text-4xl font-bold text-blue-600">{user.name || "Your Name"}</h1>
+            <p className="text-gray-500">{user.email || "your.email@example.com"}</p>
+          </div>
+        </div>
 
-      <div className="flex justify-center items-center min-h-screen">
-        {/* Content Container */}
-        <div className="bg-white bg-opacity-80 backdrop-blur-lg p-8 rounded-lg shadow-lg max-w-lg w-full z-10 relative transition-all duration-300 ease-in-out">
-          {/* Profile Section */}
-          <div className="flex justify-center mb-10">
-            <div className="relative">
-              {/* Profile Image Circle with Edit Option */}
-              <div className="w-32 h-32 bg-gray-300 rounded-full overflow-hidden border-4 border-blue-500 relative flex justify-center items-center transition-all duration-300 ease-in-out hover:border-blue-600 hover:scale-105">
-                <img
-                  src={profile.profilePic || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-                {/* Edit Icon */}
-                <label
-                  htmlFor="profilePic"
-                  className="absolute top-0 left-0 bg-blue-500 p-2 rounded-full cursor-pointer m-2 transition-all duration-300 ease-in-out hover:bg-blue-600"
-                >
-                  <FaEdit className="text-white text-lg" />
-                </label>
+        {/* Profile Details */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <p>
+              <strong className="text-blue-600">Address:</strong>{" "}
+              {isEditing ? (
                 <input
-                  type="file"
-                  id="profilePic"
-                  className="hidden"
-                  onChange={handleProfilePicChange}
+                  type="text"
+                  name="address"
+                  value={formData.address || ""}
+                  onChange={handleInputChange}
+                  className="border p-3 rounded w-full focus:outline-none focus:ring focus:ring-blue-500"
                 />
-              </div>
-              {/* Profile Information */}
-              <div className="text-center mt-4">
-                <h2 className="text-3xl font-semibold text-gray-700 transition-all duration-300 ease-in-out hover:text-blue-600">
-                  {profile.name}
-                </h2>
-                <p className="text-gray-500">{profile.email}</p>
-                <p className="text-gray-500 mt-2">{profile.phone}</p>
-                <p className="text-gray-500 mt-2">{profile.address}</p>
-              </div>
-            </div>
+              ) : (
+                <span className="text-gray-700">{user.address || "Not Provided"}</span>
+              )}
+            </p>
+            <p>
+              <strong className="text-blue-600">Phone:</strong>{" "}
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="phone"
+                  value={formData.phone || ""}
+                  onChange={handleInputChange}
+                  className="border p-3 rounded w-full focus:outline-none focus:ring focus:ring-blue-500"
+                />
+              ) : (
+                <span className="text-gray-700">{user.phone || "Not Provided"}</span>
+              )}
+            </p>
           </div>
-
-          {/* Additional Profile Fields */}
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-800">Personal Info</h3>
-              <div className="flex justify-between mt-2">
-                <p className="text-gray-600">Date of Birth:</p>
-                <p className="text-gray-600">January 1, 2004</p>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold text-gray-800">Shipping Address</h3>
-              <div className="flex justify-between mt-2">
-                <p className="text-gray-600">Address:Akshay shanskruti,baif road, B wing 206,Wagholi</p>
-                <p className="text-gray-600"> Pune,Maharashtra - 412207,India</p>
-              </div>
-              <div className="flex justify-between mt-2">
-                <p className="text-gray-600">Postal Code:</p>
-                <p className="text-gray-600">62701</p>
-              </div>
-            </div>
+          <div className="space-y-2">
+            <p>
+              <strong className="text-blue-600">Company:</strong>{" "}
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="company"
+                  value={formData.company || ""}
+                  onChange={handleInputChange}
+                  className="border p-3 rounded w-full focus:outline-none focus:ring focus:ring-blue-500"
+                />
+              ) : (
+                <span className="text-gray-700">{user.company || "Not Provided"}</span>
+              )}
+            </p>
+            <p>
+              <strong className="text-blue-600">Role:</strong>{" "}
+              <span className="text-gray-700">{user.role || "User"}</span>
+            </p>
           </div>
+        </div>
 
-          {/* Add Product Button */}
-          <div className="text-center mt-6">
+        {/* Buttons */}
+        <div className="flex justify-between items-center">
+          {isEditing ? (
+            <div className="flex space-x-4">
+              <button
+                className="bg-green-500 text-white py-3 px-6 rounded shadow-md hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-500 transition duration-300"
+                onClick={handleSave}
+              >
+                Save
+              </button>
+              <button
+                className="bg-gray-500 text-white py-3 px-6 rounded shadow-md hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-500 transition duration-300"
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
             <button
-              onClick={handleAddProductClick} // Navigate to the Add Product page
-              className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transform transition duration-300 ease-in-out hover:scale-105"
+              className="bg-blue-500 text-white py-3 px-6 rounded shadow-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-500 transition duration-300"
+              onClick={() => setIsEditing(true)}
             >
-              Add Product
+              Edit Profile
             </button>
-          </div>
+          )}
+          <button
+            className="bg-red-500 text-white py-3 px-6 rounded shadow-md hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-500 transition duration-300"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
         </div>
       </div>
     </div>

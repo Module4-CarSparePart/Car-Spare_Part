@@ -9,6 +9,7 @@ const Login = () => {
   // State hooks for form data
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [token, setToken] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // To navigate between pages
@@ -17,7 +18,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const userData = { email, password };
+    const userData = { email, password,token };
     
     try {
       setLoading(true);
@@ -25,6 +26,24 @@ const Login = () => {
       
       const response = await loginUser(userData); // API call to login
       
+      if (response.success) {
+    
+
+        // Store token in localStorage for session management
+        localStorage.setItem("authToken", response.token);
+
+        // Optionally store user details if needed
+        localStorage.setItem("user", JSON.stringify(response.user));
+
+        // Close the alert and refresh or redirect
+        setTimeout(() => {
+          navigate("/home"); // Navigate to HomePage
+          window.location.reload(); // Force page refresh to ensure state update
+        }, 200); // Adjust the delay as needed (1 second in this case)
+      } else {
+        alert(response.message); // Show error message
+      }
+
       if (response.success) {
         // Show success toast message first
         toast.success('Login successful!', {
@@ -42,12 +61,14 @@ const Login = () => {
       } else {
         setError('Invalid email or password.');
       }
-    } catch (err) {
-      setError('Error during login. Please try again.');
-    } finally {
-      setLoading(false);
+    } 
+    catch (error) {
+      console.error("Login error:", error);
+      alert(error.response?.data?.message || "An error occurred");
     }
+    
   };
+  
   return (
     <div className="h-screen flex">
       {/* Left Side: Login Form */}
