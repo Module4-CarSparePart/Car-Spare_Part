@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaUpload, FaTag, FaDollarSign, FaBox, FaImage } from "react-icons/fa"; // Importing icons for styling
+import { createProduct } from "../apiCalls";
 
 const AddProductPage = () => {
   const [productData, setProductData] = useState({

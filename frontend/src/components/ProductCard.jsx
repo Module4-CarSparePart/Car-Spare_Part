@@ -14,12 +14,16 @@ const ProductCard = ({
   productPrice,
 }) => {
   const navigate = useNavigate();
-
+  console.log(productId);
+  console.log(productName);
+  
+  
   const handleViewDetails = () => {
     navigate(`/product/${productId}`);
   };
   
 
+  
   return (
     <motion.div
       className="p-4 border rounded-lg bg-white cursor-pointer"

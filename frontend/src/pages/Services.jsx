@@ -4,19 +4,35 @@ import { FaCar, FaTools, FaShippingFast, FaHeadset, FaUserCog } from "react-icon
 const Services = () => {
   return (
     <div className="bg-gray-100 text-gray-900">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-green-400 to-blue-500 text-white text-center py-20">
+      {/* Hero Section with background image */}
+      <section
+        className="bg-gradient-to-r from-green-400 to-blue-500 text-white text-center py-20"
+        style={{
+          backgroundImage: "url('https://www.shutterstock.com/image-photo/fast-car-abstract-photo-speed-260nw-2485659189.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed", // Parallax effect
+        }}
+      >
         <h1 className="text-4xl font-bold">Our Services</h1>
         <p className="text-lg mt-4">Providing top-notch services to keep your car in perfect condition</p>
       </section>
 
-      {/* Services Overview */}
-      <section className="container mx-auto px-6 py-16 text-center">
+      {/* Services Overview Section with background image */}
+      <section
+        className="container mx-auto px-6 py-16 text-center"
+        style={{
+          backgroundImage: "url('https://via.placeholder.com/1920x1080?text=Services+Background')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed", // Parallax effect
+        }}
+      >
         <h2 className="text-3xl font-semibold mb-6">What We Offer</h2>
         <p className="text-lg mb-8">
           At SpeedySpare, we offer a range of high-quality services designed to keep your car running smoothly. Whether you're looking for spare parts, installation, or expert advice, we've got you covered.
         </p>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Service 1: Car Parts */}
           <div className="p-8 bg-white shadow-lg rounded-lg hover:bg-gray-50 transition duration-300">
@@ -47,18 +63,26 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Our Support */}
-      <section className="bg-gray-200 py-16">
+      {/* Our Support Section with background image */}
+      <section
+        className="bg-gray-200 py-16"
+        style={{
+          backgroundImage: "url('https://www.shutterstock.com/image-photo/call-center-service-profile-side-260nw-2133384313.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed", // Parallax effect
+        }}
+      >
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl font-semibold mb-6">Customer Support</h2>
-          <p className="text-lg mb-8">
+          <h2 className="text-4xl font-bold mb-6">Customer Support</h2>
+          <p className="text-lg mt-4 mb-8">
             Our customer service team is available to assist with any questions or concerns you may have. Whether it's about product details, delivery, or repairs, we're here to help.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="p-8 bg-white shadow-lg rounded-lg">
               <FaHeadset className="text-4xl text-purple-500 mb-4 mx-auto" />
               <h3 className="text-xl font-semibold mb-4">24/7 Customer Support</h3>
-              <p>
+              <p >
                 Our support team is available around the clock to assist you with any inquiries or issues you may face. We're just a phone call or email away!
               </p>
             </div>
@@ -73,13 +97,21 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Get in Touch Section */}
-      <section className="bg-gradient-to-r from-green-400 to-blue-500 text-white py-16 text-center">
-        <h2 className="text-3xl font-semibold mb-6">Ready to Get Started?</h2>
-        <p className="text-lg mb-8">
+      {/* Get in Touch Section with background image */}
+      <section
+        className="bg-gradient-to-r from-green-400 to-blue-500 text-white py-16 text-center"
+        style={{
+          backgroundImage: "url('https://via.placeholder.com/1920x1080?text=Contact+Background')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed", // Parallax effect
+        }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-black">Ready to Get Started?</h2>
+        <p className="text-lg mb-8 text-black">
           Whether you're looking for a specific part or need a repair, we're here to help. Get in touch with us today to learn more about our services!
         </p>
-        <a href="mailto:contact@speedyspare.com" className="bg-white text-gray-900 py-2 px-8 rounded-full text-xl hover:bg-gray-200 transition duration-300">
+        <a href="mailto:contact@speedyspare.com" className="bg-gray-800 text-white py-2 px-8 rounded-full text-xl hover:bg-gray-200 transition duration-300">
           Contact Us
         </a>
       </section>

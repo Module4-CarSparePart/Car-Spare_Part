@@ -1,20 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { GiCarWheel } from "react-icons/gi";
 import { FaHome, FaTools, FaConciergeBell, FaInfoCircle, FaSignInAlt, FaShoppingCart, FaUserCircle } from "react-icons/fa";
-
+import img2 from "../assets/images/logo.png";
 const Navbar = () => {
   return (
     <nav className="bg-gray-900 text-white">
-      <div className="container mx-auto">
+      <div className="container mx-auto py-0">
         {/* Top Section: Logo, Search Bar, and My Account with Cart */}
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between ">
           {/* Logo Section */}
-          <div className="text-4xl font-extrabold flex items-center space-x-3">
-            <GiCarWheel className="text-yellow-500 text-5xl" />
-            <span className="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-yellow-500 to-blue-500">
-              SpeedySpare
-            </span>
+          <div flex items-center space-x-3 justify-start >
+            {/* Replace this with your logo image */}
+            <img 
+              src={img2} // Replace this with the actual path to your logo image
+              alt="SpeedySpare Logo"
+              className="h-20 object-contain w-full pl-10 "
+            />
           </div>
 
           {/* Search Bar */}
@@ -43,7 +44,7 @@ const Navbar = () => {
         </div>
 
         {/* Bottom Section: Navigation Links */}
-        <div className="py-4">
+        <div className="py-2">
           <ul className="flex space-x-6 justify-center">
             <li>
               <Link to="/home" className="flex items-center space-x-2 hover:text-gray-300">

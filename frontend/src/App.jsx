@@ -5,7 +5,6 @@ import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
-import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import ProductDetails from "./pages/ProductsDetails";
 import Navbar from "./components/Navbar";
@@ -16,6 +15,7 @@ import AboutUs from "./pages/AboutUs";
 import Services from "./pages/Services";
 import { ToastContainer } from 'react-toastify'; // Import ToastContainer
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+import CartPage from "./pages/Cart";
 
 
 export const App = () => {
@@ -36,7 +36,7 @@ export const App = () => {
 
           {/* Main Application Routes */}
           <Route path="/home" element={<Home />} /> {/* Home route */}
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/cart" element={<CartPage />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/services" element={<Services />} />
 
