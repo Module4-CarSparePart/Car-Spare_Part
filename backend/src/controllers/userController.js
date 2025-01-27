@@ -42,56 +42,60 @@ const RegisterController = async (req, res) => {
 // POST: Login User
 const LoginController = async (req, res) => {
   try {
-    const { email, password } = req.body;
+      const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Email and password are required",
-      });
-    }
+      // Validate request
+      if (!email || !password) {
+          return res.status(400).json({
+              success: false,
+              message: "Email and password are required",
+          });
+      }
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found. Please register first.",
-      });
-    }
+      // Find user by email
+      const user = await User.findOne({ email });
+      if (!user) {
+          return res.status(404).json({
+              success: false,
+              message: "User not found. Please register first.",
+          });
+      }
 
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid credentials. Please try again.",
-      });
-    }
+      // Compare passwords using bcrypt
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+          return res.status(401).json({
+              success: false,
+              message: "Invalid credentials. Please try again.",
+          });
+      }
 
-    const token = jwt.sign(
-      { id: user._id, email: user.email },
-      JWT_SECRET,
-      { expiresIn: "1h" }
-    );
-
-    console.log(`Password mismatch:${password} vs ${user.password}`);
-    res.status(200).json({
-      success: true,
-      message: "Login successful",
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
+      // Generate JWT Token
+      // Generate a token (session)
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
     });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "An error occurred during login",
-      error: error.message,
-    });
+
+    // Optionally save session in the database if you need persistent session tracking
+    user.sessionToken = token;
+    await user.save();
+
+      // Login success
+      res.status(200).json({
+          success: true,
+          message: "Login successful",
+          user: { email: user.email, name: user.name },
+          token,
+      });
+       } catch (error) {
+      console.error("Login Error Details:", error);
+      res.status(500).json({
+          success: false,
+          error: "Internal Server Error",
+      });
   }
 };
+
 
 // POST: Forgot Password
 const ForgotPasswordController = async (req, res) => {
@@ -131,6 +135,51 @@ const ForgotPasswordController = async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 };
+
+// GET: Get User by Email
+const GetUserByEmailController = async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    // Validate the email parameter
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    // Find the user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Respond with user data (excluding sensitive information)
+    res.status(200).json({
+      success: true,
+      message: "User fetched successfully",
+      user: {
+        name: user.name,
+        email: user.email,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching user by email:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
+  }
+};
+
+
+
 
 // POST: Reset Password
 const ResetPasswordController = async (req, res) => {
@@ -230,6 +279,7 @@ export {
   ResetPasswordController,
   UpdateUserController,
   DeleteUserController,
+  GetUserByEmailController
   
   
 };

@@ -1,8 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaHome, FaTools, FaConciergeBell, FaInfoCircle, FaSignInAlt, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import img2 from "../assets/images/logo.png";
+
+
+
+
+
 const Navbar = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    const userData = localStorage.getItem("user");
+  
+    if (token && userData) {
+      setIsLoggedIn(true);
+      setUser(JSON.parse(userData)); // Parse the user details
+    }
+  }, []);
+
+  
+  const handleLogout = () => {
+    // Clear session and localStorage
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+
+    // Reset state
+    setIsLoggedIn(false);
+    setUser(null);
+
+    // Redirect to home
+    navigate("/");
+  };
+
+
   return (
     <nav className="bg-gray-900 text-white">
       <div className="container mx-auto py-0">
@@ -34,7 +70,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-6">
             <Link to="/profilepage" className="flex items-center space-x-2 hover:text-gray-300">
               <FaUserCircle />
-              <span>My Account</span>
+              <span>{user?.name || "user"}</span> {/* Display user's name */}
             </Link>
             <Link to="/cart" className="flex items-center space-x-2 hover:text-gray-300">
               <FaShoppingCart />

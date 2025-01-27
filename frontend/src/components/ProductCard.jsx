@@ -21,6 +21,7 @@ const ProductCard = ({
   const handleViewDetails = () => {
     navigate(`/product/${productId}`);
   };
+
   
 
   
