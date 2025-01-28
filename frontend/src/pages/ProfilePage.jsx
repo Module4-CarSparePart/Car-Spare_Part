@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FiEdit } from "react-icons/fi"; // Import the pencil icon
 
 const ProfilePage = () => {
   const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
+  const [profilePic, setProfilePic] = useState(""); // For new profile picture
   const navigate = useNavigate();
 
-  // Fetch user data from localStorage on component mount
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
 
@@ -22,20 +23,18 @@ const ProfilePage = () => {
     }
   }, [navigate]);
 
-  // Handle input change during editing
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Update profile information
   const handleSave = () => {
     axios
-      .put("/api/user/profile", formData, { withCredentials: true })
+      .put("/api/user/profile", { ...formData, profilePicture: profilePic }, { withCredentials: true })
       .then((response) => {
         setUser(response.data);
         setFormData(response.data);
-        localStorage.setItem("user", JSON.stringify(response.data)); // Update localStorage
+        localStorage.setItem("user", JSON.stringify(response.data));
         setIsEditing(false);
       })
       .catch((error) => {
@@ -43,12 +42,11 @@ const ProfilePage = () => {
       });
   };
 
-  // Logout function
   const handleLogout = () => {
     axios
       .post("/api/user/logout", {}, { withCredentials: true })
       .then(() => {
-        localStorage.removeItem("user"); // Remove user data from localStorage
+        localStorage.removeItem("user");
         navigate("/login");
       })
       .catch((error) => {
@@ -56,26 +54,55 @@ const ProfilePage = () => {
       });
   };
 
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setProfilePic(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 flex items-center justify-center p-6">
-      {/* Centered Profile Card */}
-      <div className="bg-white rounded-lg shadow-xl p-10 space-y-8 max-w-3xl w-full">
-        {/* Profile Header */}
+    <div
+      className="min-h-screen bg-cover bg-center flex items-center justify-center p-6 relative"
+      style={{
+        backgroundImage:
+          "url('https://media.istockphoto.com/id/478107962/photo/auto-parts.jpg?s=612x612&w=0&k=20&c=C31mE-cVYFlLqJp9smDKUczPoBEtoYl5gaGxdvH0lmM=')",
+      }}
+    >
+      <div className="absolute inset-0 bg-black bg-opacity-40 backdrop-blur-md"></div>
+
+      <div className="bg-white bg-opacity-60 rounded-lg shadow-xl p-10 space-y-8 max-w-3xl w-full relative z-10">
         <div className="relative flex flex-col md:flex-row items-center">
-          {/* Background Animation */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full blur-lg opacity-50 h-48 w-48 transform translate-x-4 translate-y-4"></div>
-          <img
-            src={user.profilePicture || "https://via.placeholder.com/150"}
-            alt="Profile"
-            className="relative z-10 w-40 h-40 rounded-full border-4 border-blue-500 shadow-lg animate-bounce"
-          />
+          <div className="relative">
+            <img
+              src={profilePic || user.profilePicture || "https://via.placeholder.com/150"}
+              alt="Profile"
+              className="relative z-10 w-40 h-40 rounded-full border-4 border-blue-500 shadow-lg"
+            />
+            <label
+              htmlFor="profile-pic-input"
+              className="absolute top-2 z right-2 bg-blue-500 text-white p-2 rounded-full shadow-md cursor-pointer hover:bg-blue-600"
+            >
+              <FiEdit />
+            </label>
+            <input
+              id="profile-pic-input"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleProfilePicChange}
+            />
+          </div>
           <div className="ml-0 md:ml-8 text-center md:text-left mt-4 md:mt-0">
             <h1 className="text-4xl font-bold text-blue-600">{user.name || "Your Name"}</h1>
             <p className="text-gray-500">{user.email || "your.email@example.com"}</p>
           </div>
         </div>
 
-        {/* Profile Details */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <p>
@@ -129,7 +156,6 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="flex justify-between items-center">
           {isEditing ? (
             <div className="flex space-x-4">
@@ -159,6 +185,12 @@ const ProfilePage = () => {
             onClick={handleLogout}
           >
             Logout
+          </button>
+          <button
+            className="bg-purple-500 text-white py-3 px-6 rounded shadow-md hover:bg-purple-600 focus:outline-none focus:ring focus:ring-purple-500 transition duration-300"
+            onClick={() => navigate("/add-product")}
+          >
+            Add Product
           </button>
         </div>
       </div>

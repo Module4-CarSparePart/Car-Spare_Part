@@ -7,7 +7,7 @@ const CartPage = () => {
 
   // Fetch cart from localStorage
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const storedCart = JSON.parse(localStorage.getItem("/cart")) || [];
     setCart(storedCart);
 
     // Calculate total price
@@ -21,7 +21,7 @@ const CartPage = () => {
       item.id === id ? { ...item, quantity: item.quantity + 1 } : item
     );
     setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    localStorage.setItem("/cart", JSON.stringify(updatedCart));
   };
 
   // Handle decreasing product quantity
@@ -30,14 +30,14 @@ const CartPage = () => {
       item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
     );
     setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    localStorage.setItem("/cart", JSON.stringify(updatedCart));
   };
 
   // Handle removing product from cart
   const removeFromCart = (id) => {
     const updatedCart = cart.filter((item) => item.id !== id);
     setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    localStorage.setItem("/cart", JSON.stringify(updatedCart));
   };
 
   // Handle checkout or empty cart action
