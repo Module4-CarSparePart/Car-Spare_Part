@@ -5,6 +5,7 @@ import {
   RESET_PASSWORD_URL,
   FORGOT_PASSWORD_URL,
   PRODUCT_BASE_URL, // Add base URL for Product APIs
+  
 } from "./endPoint"; // Import API endpoints
 
 // User Authentication API Calls
@@ -131,4 +132,33 @@ export const deleteProduct = async (productId) => {
     );
     throw error;
   }
+}
+
+export const fetchCheckout = async (totalAmount) => {
+  console.log("Sending request to /api/checkout with totalAmount:", totalAmount);
+  try {
+    const response = await fetch("/api/payments/create-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ totalAmount }),
+    });
+
+    console.log("Response received from /api/checkout:", response);
+
+    if (!response.ok) {
+      console.error("Failed to fetch checkout details. Status:", response.status);
+      throw new Error("Failed to fetch checkout details");
+    }
+
+    const data = await response.json();
+    console.log("Checkout details fetched successfully:", data);
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching checkout details:", error);
+    throw error;
+  }
 };
+

@@ -16,6 +16,7 @@ import Services from "./pages/Services";
 import { ToastContainer } from 'react-toastify'; // Import ToastContainer
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 import CartPage from "./pages/Cart";
+import CheckoutPage from "./pages/CheckoutPage";
 
 
 export const App = () => {
@@ -47,6 +48,8 @@ export const App = () => {
 
           {/* User Profile Route */}
           <Route path="/profilepage" element={<ProfilePage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+       
         </Routes>
       </div>
       {/* Footer remains constant across pages */}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import {fetchCheckout} from "../apiCalls";
 
 const CartPage = () => {
   const [cart, setCart] = useState([]);
@@ -49,6 +50,7 @@ const CartPage = () => {
 
     // Proceed to checkout (for now just a placeholder)
     alert("Proceeding to checkout...");
+
   };
 
   // Render empty cart message
@@ -114,7 +116,8 @@ const CartPage = () => {
       {/* Checkout Button */}
       <div className="mt-6 text-center">
         <button
-          onClick={handleCheckout}
+          
+          onClick={fetchCheckout(total)}
           className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700"
         >
           Proceed to Checkout

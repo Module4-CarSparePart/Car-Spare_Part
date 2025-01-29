@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -14,15 +14,62 @@ const ProductCard = ({
   productPrice,
 }) => {
   const navigate = useNavigate();
-  console.log(productId);
-  console.log(productName);
-  
+
   
   const handleViewDetails = () => {
     navigate(`/product/${productId}`);
   };
-
+  const id=productId;
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
+  
+
+  // Fetch product details from backend
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(`http://localhost:4000/api/product/getprobyid/${id}`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch product details.");
+        }
+
+        const data = await response.json();
+        setProduct(data); // Set product data
+        setLoading(false); // Turn off the loading state
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  const addToCart = () => {
+    // Get the existing cart from localStorage or initialize an empty cart
+    const existingCart = JSON.parse(localStorage.getItem("/cart")) || [];
+
+    // Check if product is already in the cart
+    const existingProductIndex = existingCart.findIndex((item) => item.id === productId);
+
+    if (existingProductIndex !== -1) {
+      // Update the product quantity if it already exists in the cart
+      existingCart[existingProductIndex].quantity += 1;
+    } else {
+      // Add the product to the cart with quantity 1
+      existingCart.push({ ...product, quantity: 1 });
+    }
+
+    // Save the updated cart back to localStorage
+    localStorage.setItem("/cart", JSON.stringify(existingCart));
+
+    // Optionally, you can show a success message here
+    alert("Product added to cart!");
+  };
+
 
   
   return (
@@ -47,18 +94,20 @@ const ProductCard = ({
         </p>
       )}
       <div className="flex justify-between space-x-2">
-        <button
+      <button
+          onClick={addToCart}
           className="text-sm px-4 py-2 rounded transition-all duration-300"
           style={{
-            backgroundColor: "orange", // Accent color
+            backgroundColor: "orange", // Primary theme color
             color: "white", // Button text color
           }}
           onMouseOver={(e) =>
-            (e.target.style.backgroundColor = "darkorange") // Darker orange on hover
+            (e.target.style.backgroundColor = "midnightblue") // Darker blue on hover
           }
           onMouseOut={(e) =>
             (e.target.style.backgroundColor = "orange") // Original color
           }
+          
         >
           Add to Cart
         </button>
