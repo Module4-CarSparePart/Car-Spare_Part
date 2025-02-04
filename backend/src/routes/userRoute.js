@@ -8,6 +8,8 @@ import {
   DeleteUserController,
   GetUserByEmailController
 } from '../controllers/userController.js';
+import { LogoutController } from '../controllers/authController.js';
+
 
 const router = express.Router();
 
@@ -22,5 +24,7 @@ router.get("/get/:email", GetUserByEmailController);
 // Routes for Forgot and Reset Password
 router.post('/forgot-password', ForgotPasswordController); // Send reset token via email
 router.post('/reset-password/:token', ResetPasswordController); // Reset password using the token
+
+router.post(`/logout`,LogoutController);
 
 export default router; // Use ES Module export

@@ -22,6 +22,8 @@ const ProfilePage = () => {
       navigate("/login");
     }
   }, [navigate]);
+ 
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -41,17 +43,9 @@ const ProfilePage = () => {
         console.error("Error updating profile:", error);
       });
   };
-
   const handleLogout = () => {
-    axios
-      .post("/api/user/logout", {}, { withCredentials: true })
-      .then(() => {
-        localStorage.removeItem("user");
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.error("Logout failed:", error);
-      });
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
   const handleProfilePicChange = (e) => {
