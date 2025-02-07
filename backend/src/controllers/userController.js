@@ -119,7 +119,7 @@ const ForgotPasswordController = async (req, res) => {
     });
 
     // Keep the reset URL simple without appending the token
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+    const resetUrl = `https://glistening-figolla-261b41.netlify.app/reset-password/${token}`;
 
     // Include the token separately in the email body
     await sendEmail(user.email, "Password Reset Request", `
