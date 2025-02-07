@@ -21,6 +21,9 @@ const userSchema = new mongoose.Schema(
     },
     
   },
+  {
+    timestamps: true, // Adds createdAt and updatedAt timestamps automatically
+  }
 );
 
 // Create the User model

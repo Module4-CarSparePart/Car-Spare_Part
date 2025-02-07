@@ -112,6 +112,10 @@ const Home = () => {
                 className="p-4 border rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white"
                 whileHover={{ scale: 1.05 }}
               >
+                <Link
+                  to={`/products`}
+                  className=""
+              >
                 <img
                   src={category.image}
                   alt={category.name}
@@ -120,6 +124,7 @@ const Home = () => {
                 <h3 className="text-lg font-semibold text-gray-700">
                   {category.name}
                 </h3>
+                </Link>
               </motion.div>
             ))}
           </div>

@@ -17,6 +17,16 @@ const productSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  make: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  model: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   category: {
     type: String,
     required: true,

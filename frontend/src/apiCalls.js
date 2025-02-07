@@ -4,11 +4,11 @@ import {
   LOGIN_URL,
   RESET_PASSWORD_URL,
   FORGOT_PASSWORD_URL,
-  PRODUCT_BASE_URL, // Add base URL for Product APIs
+  PRODUCT_BASE_URL, 
   
-} from "./endPoint"; // Import API endpoints
+} from "./endPoint"; 
 
-// User Authentication API Calls
+
 
 // User Registration
 export const registerUser = async (userData) => {

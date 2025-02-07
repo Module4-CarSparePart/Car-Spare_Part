@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; // Add Navigate import for redirect
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; 
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
@@ -13,8 +13,8 @@ import ProfilePage from "./pages/ProfilePage";
 import AddProductPage from "./pages/AddProduct";
 import AboutUs from "./pages/AboutUs";
 import Services from "./pages/Services";
-import { ToastContainer } from 'react-toastify'; // Import ToastContainer
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+import { ToastContainer } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 import CartPage from "./pages/Cart";
 import CheckoutPage from "./pages/CheckoutPage";
 
@@ -52,7 +52,7 @@ export const App = () => {
        
         </Routes>
       </div>
-      {/* Footer remains constant across pages */}
+     
       <Footer />
       <ToastContainer />
     </Router>

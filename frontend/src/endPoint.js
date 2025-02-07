@@ -1,6 +1,6 @@
 // Base URLs for API
-export const API_BASE_URL = 'http://localhost:4000/api/user';  // User-related backend URL
-export const PRODUCT_BASE_URL = 'http://localhost:4000/api/product'; // Product-related backend URL
+export const API_BASE_URL = 'https://car-spare-part-1.onrender.com/api/user';  // User-related backend URL
+export const PRODUCT_BASE_URL = 'https://car-spare-part-1.onrender.com/api/product'; // Product-related backend URL
 
 // User Authentication Endpoints
 export const REGISTER_URL = `${API_BASE_URL}/register`; // Registration Endpoint

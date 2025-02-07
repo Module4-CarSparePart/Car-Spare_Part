@@ -4,15 +4,15 @@ import ProductCard from "../components/ProductCard";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
-  const [brands, setBrands] = useState([
-    "Bosch",
-    "Magneti Marelli",
-    "Denso",
-    "Mann Filter",
-    "WIX Filters", // Add your predefined brands here
-  ]); // Predefined brands
-  const [selectedCategory, setSelectedCategory] = useState(""); // State for selected category
-  const [selectedBrand, setSelectedBrand] = useState(""); // State for selected brand
+  const [brands] = useState(["Bosch", "Magneti Marelli", "Denso", "Mann Filter", "WIX Filters"]);
+  const [carMakes] = useState({
+    Tata: ["Altroz", "Nexon", "Harrier"],
+    Hyundai: ["i20", "Creta", "Venue"],
+  });
+  const [selectedMake, setSelectedMake] = useState("");
+  const [selectedModel, setSelectedModel] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedBrand, setSelectedBrand] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -26,6 +26,23 @@ const Product = () => {
     fetchProducts();
   }, []);
 
+  const filteredProducts = products
+    .filter((product) => {
+      if (selectedCategory && product.category?.toLowerCase() !== selectedCategory.toLowerCase()) {
+        return false;
+      }
+      if (selectedBrand && product.brand?.toLowerCase() !== selectedBrand.toLowerCase()) {
+        return false;
+      }
+      if (selectedMake && product.make?.toLowerCase() !== selectedMake.toLowerCase()) {
+        return false;
+      }
+      if (selectedModel && product.model?.toLowerCase() !== selectedModel.toLowerCase()) {
+        return false;
+      }
+      return true;
+    });
+
   return (
     <div className="container mx-auto mt-10">
       <div className="flex">
@@ -34,34 +51,39 @@ const Product = () => {
           <h2 className="font-bold text-lg mb-4">Filter Parts By</h2>
 
           <div className="mb-4">
-            <h3 className="font-semibold mb-2">Genuine or Aftermarket</h3>
-            <div>
-              <label className="block">
-                <input type="radio" name="type" className="mr-2" />
-                Aftermarket
-              </label>
-              <label className="block">
-                <input type="radio" name="type" className="mr-2" />
-                Genuine
-              </label>
-            </div>
-          </div>
-
-          <div className="mb-4">
             <h3 className="font-semibold mb-2">Select Car Make</h3>
-            <select className="w-full border p-2 rounded">
+            <select
+              className="w-full border p-2 rounded"
+              value={selectedMake}
+              onChange={(e) => {
+                setSelectedMake(e.target.value);
+                setSelectedModel(""); // Reset model when make changes
+              }}
+            >
               <option value="">Select Car Make</option>
-              <option value="make1">Tata</option>
-              <option value="make2">Hyundai</option>
+              {Object.keys(carMakes).map((make, index) => (
+                <option key={index} value={make}>
+                  {make}
+                </option>
+              ))}
             </select>
           </div>
 
           <div className="mb-4">
             <h3 className="font-semibold mb-2">Select Car Model</h3>
-            <select className="w-full border p-2 rounded">
+            <select
+              className="w-full border p-2 rounded"
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+              disabled={!selectedMake}
+            >
               <option value="">Select Car Model</option>
-              <option value="model1">Altroz</option>
-              <option value="model2">Nexon</option>
+              {selectedMake &&
+                carMakes[selectedMake].map((model, index) => (
+                  <option key={index} value={model}>
+                    {model}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -100,7 +122,6 @@ const Product = () => {
 
         {/* Main Content */}
         <main className="w-5/4 p-6">
-          {/* Sorting */}
           <div className="flex justify-between items-center mb-5">
             <h1 className="text-xl font-bold">Shop for Car Spare Parts</h1>
             <select className="border p-2 rounded">
@@ -112,22 +133,19 @@ const Product = () => {
 
           {/* Product Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products
-              .filter((product) =>
-                selectedCategory ? product.category === selectedCategory : true
-              )
-              .filter((product) =>
-                selectedBrand ? product.brand === selectedBrand : true
-              )
-              .map((product) => (
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
                 <ProductCard
-                
+                  key={product._id}
                   productId={product._id}
                   productName={product.name}
                   productImage={product.image}
                   productPrice={product.price}
                 />
-              ))}
+              ))
+            ) : (
+              <p className="text-center col-span-full">No products found for the selected filters.</p>
+            )}
           </div>
         </main>
       </div>

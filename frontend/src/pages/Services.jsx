@@ -104,7 +104,7 @@ const Services = () => {
           backgroundImage: "url('https://via.placeholder.com/1920x1080?text=Contact+Background')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundAttachment: "fixed", // Parallax effect
+          backgroundAttachment: "fixed", 
         }}
       >
         <h2 className="text-3xl font-bold mb-6 text-black">Ready to Get Started?</h2>

@@ -13,6 +13,9 @@ const CheckoutPage = () => {
       console.log("Total amount set to:", storedAmount);
     }
   }, []);
+  
+  
+  
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -35,7 +38,7 @@ const CheckoutPage = () => {
     try {
       console.log("Creating Razorpay order");
       setLoading(true);
-      const response = await axios.post("http://localhost:4000/api/payments/create-order", {
+      const response = await axios.post("https://car-spare-part-1.onrender.com/api/payments/create-order", {
         amount: amount * 100, // Convert to paise
       });
       console.log("Order created successfully:", response.data);
@@ -63,19 +66,20 @@ const CheckoutPage = () => {
     console.log("Opening Razorpay payment gateway");
     const options = {
       key: "rzp_test_qLvM3i0PO1VLdD", // Replace with actual Razorpay Key
-      amount: orderData.amount,
+      amount: storedAmount, // Amount in paise
       currency: "INR",
       name: "Car Spare Parts",
-      description: "Purchase of car parts",
+      description: `Total Price:${storedAmount}`, // Show total price
       image: "/logo.png",
       order_id: orderData.id, // Use the order ID from backend
       handler: async (response) => {
         console.log("Payment successful. Response:", response);
         alert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
+        
 
         try {
           console.log("Verifying payment with backend");
-          await axios.post("http://localhost:4000/api/payments/verify", {
+          await axios.post("https://car-spare-part-1.onrender.com/api/payments/verify", {
             order_id: response.razorpay_order_id,
             payment_id: response.razorpay_payment_id,
             signature: response.razorpay_signature,
@@ -93,7 +97,10 @@ const CheckoutPage = () => {
       },
       notes: { address: "Your Company Address" },
       theme: { color: "#f97316" },
+      display_amount: storedAmount, // Ensure total price is displayed
+      display_currency: "INR",
     };
+  
 
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
@@ -110,7 +117,7 @@ const CheckoutPage = () => {
           <input
             type="number"
             className="w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring focus:ring-orange-300 focus:border-orange-500"
-            value={amount}
+            value={storedAmount}
             readOnly
           />
         </div>
@@ -119,7 +126,7 @@ const CheckoutPage = () => {
           onClick={handlePayment}
           disabled={loading || amount <= 0}
         >
-          {loading ? "Processing..." : "Pay Now"}
+          {loading ? "Processing..." : `Pay ₹${storedAmount}`}
         </button>
       </div>
     </div>

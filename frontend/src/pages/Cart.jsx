@@ -49,7 +49,7 @@ const CartPage = () => {
     try {
       setIsProcessing(true);
       console.log("Creating Razorpay order...");
-      const response = await axios.post("http://localhost:4000/api/payments/create-order", {
+      const response = await axios.post("https://car-spare-part-1.onrender.com/api/payments/create-order", {
         amount: total * 100, // Convert to paise
       });
       console.log("Razorpay order created:", response.data);
@@ -76,16 +76,16 @@ const CartPage = () => {
     console.log("Payment initiated with order data:", orderData);
     const options = {
       key: "rzp_test_qLvM3i0PO1VLdD", // Replace with your Razorpay Key
-      amount: orderData.amount,
+      amount: orderData.amount, // Amount in paise
       currency: "INR",
       name: "Car Spare Parts",
-      description: "Purchase of car parts",
+      description: `Total Amount: ₹${orderData.amount}`, // Display total price in description
       image: "/logo.png",
       order_id: orderData.id,
       handler: async (response) => {
         try {
           console.log("Payment successful, verifying payment...");
-          await axios.post("http://localhost:4000/api/payments/verify", {
+          await axios.post("https://car-spare-part-1.onrender.com/api/payments/verify", {
             order_id: response.razorpay_order_id,
             payment_id: response.razorpay_payment_id,
             signature: response.razorpay_signature,
@@ -139,18 +139,20 @@ const CartPage = () => {
                 <p className="text-sm text-gray-600">{item.brand}</p>
               </div>
             </div>
-            <div className="text-lg font-bold text-red-600">₹{item.price * item.quantity}</div>
+            <div className="text-lg font-bold text-red-600">₹{(item.price * item.quantity).toFixed(2)}</div>
           </div>
         ))}
       </div>
 
       <div className="mt-6 flex justify-between text-lg font-semibold text-gray-800">
         <span>Total Price:</span>
-        <span className="text-red-600">₹{total}</span>
+        <span className="text-red-600">₹{total.toFixed(2)}</span>
       </div>
 
       <div className="mt-6 text-center">
-        <button onClick={() => setIsOpen(true)} className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700">Proceed to Checkout</button>
+        <button onClick={() => setIsOpen(true)} className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700">
+          Proceed to Checkout
+        </button>
       </div>
 
       {isOpen && (
@@ -163,8 +165,12 @@ const CartPage = () => {
               <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className="w-full p-2 mb-3 border rounded" required />
               <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="w-full p-2 mb-3 border rounded" required />
               <div className="flex justify-between">
-                <button type="button" onClick={() => setIsOpen(false)} className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
-                <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" disabled={isProcessing}>{isProcessing ? "Processing..." : "Proceed to Payment"}</button>
+                <button type="button" onClick={() => setIsOpen(false)} className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                  Cancel
+                </button>
+                <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" disabled={isProcessing}>
+                  {isProcessing ? "Processing..." : `Pay ₹${total.toFixed(2)}`}
+                </button>
               </div>
             </form>
           </div>
