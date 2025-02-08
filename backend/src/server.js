@@ -11,7 +11,7 @@ import paymentRouter from './routes/paymentRoutes.js';
 dotenv.config();  // Load environment variables
 
 const app = express();
-const port = 4000;
+const port = 7000;
 
 // Middleware
 app.use(express.json());  // Parse incoming requests with JSON payload

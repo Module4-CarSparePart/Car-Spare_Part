@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { FaUpload, FaTag, FaDollarSign, FaBox, FaImage } from "react-icons/fa"; // Importing icons for styling
+import { FaUpload, FaTag, FaDollarSign, FaBox, FaImage, FaCar } from "react-icons/fa"; // Importing icons for styling
 import { createProduct } from "../apiCalls";
 
 const AddProductPage = () => {
   const [productData, setProductData] = useState({
     name: "",
     brand: "",
+    make: "",
+    model: "",
     price: "",
     category: "",
     stock: "",
@@ -36,6 +38,8 @@ const AddProductPage = () => {
         setProductData({
           name: "",
           brand: "",
+          make: "",
+          model: "",
           price: "",
           category: "",
           stock: "",
@@ -68,49 +72,16 @@ const AddProductPage = () => {
             Add New Product
           </h3>
           <form onSubmit={handleSubmit}>
-            {[  
-              {
-                label: "Product Name",
-                name: "name",
-                type: "text",
-                icon: <FaTag className="text-gray-500" />,
-              },
-              {
-                label: "Brand",
-                name: "brand",
-                type: "text",
-                icon: <FaTag className="text-gray-500" />,
-              },
-              {
-                label: "Price",
-                name: "price",
-                type: "number",
-                icon: <FaDollarSign className="text-gray-500" />,
-              },
-              {
-                label: "Category",
-                name: "category",
-                type: "text",
-                icon: <FaBox className="text-gray-500" />,
-              },
-              {
-                label: "Stock",
-                name: "stock",
-                type: "number",
-                icon: <FaBox className="text-gray-500" />,
-              },
-              {
-                label: "Description",
-                name: "description",
-                type: "textarea",
-                icon: <FaBox className="text-gray-500" />,
-              },
-              {
-                label: "Image URL",
-                name: "image",
-                type: "text",
-                icon: <FaImage className="text-gray-500" />,
-              },
+            {[
+              { label: "Product Name", name: "name", type: "text", icon: <FaTag className="text-gray-500" /> },
+              { label: "Brand", name: "brand", type: "text", icon: <FaTag className="text-gray-500" /> },
+              { label: "Make", name: "make", type: "text", icon: <FaCar className="text-gray-500" /> },
+              { label: "Model", name: "model", type: "text", icon: <FaCar className="text-gray-500" /> },
+              { label: "Price", name: "price", type: "number", icon: <FaDollarSign className="text-gray-500" /> },
+              { label: "Category", name: "category", type: "text", icon: <FaBox className="text-gray-500" /> },
+              { label: "Stock", name: "stock", type: "number", icon: <FaBox className="text-gray-500" /> },
+              { label: "Description", name: "description", type: "textarea", icon: <FaBox className="text-gray-500" /> },
+              { label: "Image URL", name: "image", type: "text", icon: <FaImage className="text-gray-500" /> },
             ].map((field) => (
               <div key={field.name} className="mb-6 flex items-center">
                 <div className="mr-3">{field.icon}</div>
@@ -149,11 +120,7 @@ const AddProductPage = () => {
                 }`}
                 disabled={loading}
               >
-                {loading ? (
-                  <span className="animate-pulse">Adding...</span>
-                ) : (
-                  "Add Product"
-                )}
+                {loading ? <span className="animate-pulse">Adding...</span> : "Add Product"}
               </button>
             </div>
           </form>
