@@ -1,6 +1,6 @@
 // Base URLs for API
 export const API_BASE_URL = 'https://car-spare-part-2.onrender.com/api/user';  // User-related backend URL
-export const PRODUCT_BASE_URL = 'https://car-spare-part-2.onrender.comgi7000/api/product'; // Product-related backend URL
+export const PRODUCT_BASE_URL = 'https://car-spare-part-2.onrender.com/api/product'; // Product-related backend URL
 
 // User Authentication Endpoints
 export const REGISTER_URL = `${API_BASE_URL}/register`; // Registration Endpoint
